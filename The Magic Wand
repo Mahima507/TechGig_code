@@ -1,0 +1,47 @@
+/* Read input from STDIN. Print your output to STDOUT*/
+
+import java.io.*;
+import java.util.*;
+
+public class CandidateCode {
+    public static void main(String args[]) throws Exception {
+ BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] input1 = br.readLine().split(" ");
+        int N = Integer.parseInt(input1[0]); // length of array
+        int M = Integer.parseInt(input1[1]); // length of queries
+
+        String[] input2 = br.readLine().split(" ");
+        int[] arr = new int[N];
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(input2[i]);
+        }
+
+        String[] input3 = br.readLine().split(" ");
+        int[] queries = new int[M];
+        for (int i = 0; i < M; i++) {
+            queries[i] = Integer.parseInt(input3[i]);
+        }
+
+        int[] result = getMinCost(arr, queries);
+        for (int i = 0; i < M; i++) {
+            System.out.print(result[i] + " ");
+        }
+    }
+
+    private static int[] getMinCost(int[] arr, int[] queries) {
+        int[] result = new int[queries.length];
+
+        for (int i = 0; i < queries.length; i++) {
+            int totalCost = 0;
+
+            for (int j = 0; j < arr.length; j++) {
+                int diff = Math.abs(arr[j] - queries[i]);
+                totalCost += diff;
+            }
+
+            result[i] = totalCost;
+        }
+
+        return result;
+    }
+}
