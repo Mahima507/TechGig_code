@@ -1,0 +1,61 @@
+/* Read input from STDIN. Print your output to STDOUT*/
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+public class CandidateCode {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] input1 = br.readLine().split(" ");
+        int N = Integer.parseInt(input1[0]); // number of animals
+        int X = Integer.parseInt(input1[1]); // available capacity
+
+        String[] input2 = br.readLine().split(" ");
+        long[] energyLevels = new long[N];
+        for (int i = 0; i < N; i++) {
+            energyLevels[i] = Long.parseLong(input2[i]);
+        }
+
+        long result = getMinimumEnergyLevel(energyLevels, X);
+        System.out.println(result);
+    }
+
+    private static long getMinimumEnergyLevel(long[] energyLevels, int X) {
+        Arrays.sort(energyLevels); // Sort the energy levels in ascending order
+        int n = energyLevels.length;
+
+        long low = 1; // Minimum possible energy level
+        long high = energyLevels[n - X]; // Maximum possible energy level
+        long result = -1; // Default value if it's not possible to save exactly X animals
+
+        while (low <= high) {
+            long mid = low + (high - low) / 2;
+
+            if (isPossible(energyLevels, X, mid)) {
+                result = mid;
+                low = mid + 1; // Look for higher energy levels
+            } else {
+                high = mid - 1; // Look for lower energy levels
+            }
+        }
+
+        return result;
+    }
+
+    private static boolean isPossible(long[] energyLevels, int X, long P) {
+        int count = 0;
+
+        for (int i = energyLevels.length - 1; i >= 0; i--) {
+            if (energyLevels[i] >= P) {
+                count++;
+            } else {
+                break; // Stop checking further as energy levels are sorted in ascending order
+            }
+        }
+
+        return count >= X;
+    }
+}
+
+
